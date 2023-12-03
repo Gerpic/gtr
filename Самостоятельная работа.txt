@@ -1,0 +1,100 @@
+        <TabControl>
+            <TabItem Header="Вкладка1">
+                <TabItem.Content>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="108,10,10,10">
+                            <Slider x:Name="fontSizeSlider" Width="200" Minimum="10" Maximum="50" Value="20" 
+ValueChanged="FontSizeSlider_ValueChanged"/>
+                            <ComboBox x:Name="fontComboBox" Width="200" 
+SelectionChanged="fontComboBox_SelectionChanged"/>
+                        </StackPanel>
+
+                        <TextBox x:Name="textBox" Grid.Row="1" AcceptsReturn="True" Margin="10"/>
+
+                        <Button Content="B" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" 
+Click="Button_Click" Width="43"/>
+                        <Button Content="I" FontStyle="Italic" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="62,0,0,0" 
+Click="Button_Click1" Width="43"/>
+                    </Grid>
+                </TabItem.Content>
+            </TabItem>
+            <TabItem Header="Вкладка2">
+                <TabItem.Content>
+                    <Grid>
+                        <Menu>
+                            <MenuItem Header="Файл">
+                                <MenuItem Header="Добавить текст" Click="AddText_Click"/>
+                                <MenuItem Header="Очистить текст" Click="ClearText_Click"/>
+                            </MenuItem>
+                        </Menu>
+
+                        <RichTextBox Name="richTextBox" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="5"/>
+                    </Grid>
+                </TabItem.Content>
+            </TabItem>
+        </TabControl>
+
+
+
+
+
+public MainWindow()
+{
+    InitializeComponent();
+
+    foreach (FontFamily fontFamily in Fonts.SystemFontFamilies)
+    {
+        fontComboBox.Items.Add(fontFamily.Source);
+    }
+}
+
+private void FontSizeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+{
+    if (textBox != null)
+    {
+        textBox.FontSize = e.NewValue;
+    }
+}
+
+private void fontComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+{
+    if (fontComboBox != null && fontComboBox.SelectedItem != null && textBox != null)
+    {
+        string selectedFont = fontComboBox.SelectedItem.ToString();
+        textBox.FontFamily = new FontFamily(selectedFont);
+    }
+}
+
+private void Button_Click(object sender, RoutedEventArgs e)
+{
+    if (textBox != null)
+    {
+
+        textBox.FontWeight = (textBox.FontWeight == FontWeights.Bold) ? FontWeights.Normal : FontWeights.Bold;
+    }
+}
+
+private void Button_Click1(object sender, RoutedEventArgs e)
+{
+    if (textBox != null)
+    {
+
+        textBox.FontStyle = (textBox.FontStyle == FontStyles.Italic) ? FontStyles.Normal : FontStyles.Italic;
+    }
+}
+private void AddText_Click(object sender, RoutedEventArgs e)
+{
+    richTextBox.AppendText("Новый текст\n");
+}
+
+private void ClearText_Click(object sender, RoutedEventArgs e)
+{
+    richTextBox.Document.Blocks.Clear();
+}
+
+

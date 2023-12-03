@@ -1,0 +1,54 @@
+<TabControl>
+    <TabItem Header="Вкладка 1">
+        <Grid>
+            <StackPanel Margin="10">
+                <Label Content="Введите количество секунд:"/>
+                <TextBox x:Name="hoursTextBox" Margin="0,0,0,10"/>
+                <Button Content="Рассчитать" Click="CalculateButton_Click" Width="766"/>
+                <Label x:Name="resultLabel" Content=""/>
+            </StackPanel>
+        </Grid>
+    </TabItem>
+    <TabItem Header="Вкладка 2">
+        <Grid Background="#FFE5E5E5" Margin="-1,0,1,0">
+            <Button Content="Загрузить картинку" HorizontalAlignment="Center" Margin="0,24,0,0" VerticalAlignment="Top" Click="OpenImage_Click" Height="39" Width="174"/>
+            <Image x:Name="img1" HorizontalAlignment="Left" Height="301" Margin="109,88,0,0" VerticalAlignment="Top" Width="594"/>
+        </Grid>
+    </TabItem>
+</TabControl>
+
+
+
+
+
+
+
+
+
+
+private void CalculateButton_Click(object sender, RoutedEventArgs e)
+{
+    if (int.TryParse(hoursTextBox.Text, out int totalSeconds))
+    {
+        int Hours = totalSeconds / 3600;
+        resultLabel.Content = $"С начала суток прошло {Hours} часов.";
+    }
+    else
+    {
+        resultLabel.Content = "Введите корректное значение для количества секунд.";
+    }
+}
+
+private void OpenImage_Click(object sender, RoutedEventArgs e)
+{
+    OpenFileDialog openFileDialog = new OpenFileDialog();
+    openFileDialog.Filter = "Картинка (*.png; *.gif)| *.png; *.gif;";
+    string imagePath = "";
+
+    if (openFileDialog.ShowDialog() == true)
+    {
+        imagePath = openFileDialog.FileName;
+    }
+    string fileName = imagePath;
+    img1.Source = new BitmapImage(new Uri(fileName));
+}
